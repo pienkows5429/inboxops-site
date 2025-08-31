@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InboxOps - Cold Email That Works</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-50: #eff6ff;
+            --primary-100: #dbeafe;
+            --primary-500: #3b82f6;
+            --primary-600: #2563eb;
+            --primary-700: #1d4ed8;
+            --primary-900: #1e3a8a;
+            
+            --neutral-50: #fafafa;
+            --neutral-100: #f4f4f5;
+            --neutral-200: #e4e4e7;
+            --neutral-300: #d4d4d8;
+            --neutral-400: #a1a1aa;
+            --neutral-500: #71717a;
+            --neutral-600: #52525b;
+            --neutral-700: #3f3f46;
+            --neutral-800: #27272a;
+            --neutral-900: #18181b;
+            
+            --success-500: #10b981;
+            --warning-500: #f59e0b;
+            --error-500: #ef4444;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--neutral-800);
+            overflow-x: hidden;
+            font-feature-settings: 'cv11', 'ss01';
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--neutral-200);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 0;
+        }
+        
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--primary-600);
+            text-decoration: none;
+            letter-spacing: -0.025em;
+        }
+        
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            color: var(--neutral-600);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            white-space: nowrap;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -6px;
+            left: 50%;
+            background: var(--primary-600);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateX(-50%);
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-600);
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .nav-cta {
+            background: linear-gradient(135deg, var(--primary-600), var(--primary-700));
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+        }
+        
+        .nav-cta:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            background: linear-gradient(135deg, var(--primary-700), var(--primary-800));
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--neutral-600);
+            cursor: pointer;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, 
+                rgba(59, 130, 246, 0.02) 0%, 
+                rgba(147, 51, 234, 0.02) 50%, 
+                rgba(236, 72, 153, 0.02) 100%),
+                var(--neutral-50);
+            padding: 8rem 0 6rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(147, 51, 234, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        
+        .hero-text h1 {
+            font-size: 3.75rem;
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.025em;
+            color: var(--neutral-900);
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: slideInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        
+        .hero-text p {
+            font-size: 1.25rem;
+            line-height: 1.7;
+            color: var(--neutral-600);
+            margin-bottom: 2.5rem;
+            font-weight: 400;
+            opacity: 0;
+            animation: slideInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s forwards;
+        }
+        
+        .cta-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, var(--primary-600), var(--primary-700));
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+                0 4px 6px -1px rgba(0, 0, 0, 0.1),
+                0 2px 4px -1px rgba(0, 0, 0, 0.06),
+                0 0 0 0 rgba(59, 130, 246, 0.5);
+            opacity: 0;
+            animation: slideInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s forwards;
+        }
+        
+        .cta-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 10px 15px -3px rgba(0, 0, 0, 0.1),
+                0 4px 6px -2px rgba(0, 0, 0, 0.05),
+                0 0 0 4px rgba(59, 130, 246, 0.1);
+            background: linear-gradient(135deg, var(--primary-700), var(--primary-800));
+        }
+        
+        .hero-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            animation: slideInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.6s forwards;
+        }
+        
+        .hero-image img {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            border-radius: 1rem;
+            box-shadow: 
+                0 25px 50px -12px rgba(0, 0, 0, 0.25),
+                0 0 0 1px rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Section Styling */
+        .section {
+            padding: 6rem 0;
+            position: relative;
+        }
+        
+        .section:nth-child(even) {
+            background: var(--neutral-50);
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: var(--neutral-900);
+            letter-spacing: -0.025em;
+        }
+        
+        .section-subtitle {
+            font-size: 1.125rem;
+            text-align: center;
+            color: var(--neutral-600);
+            max-width: 640px;
+            margin: 0 auto 3rem;
+            line-height: 1.7;
+        }
+        
+        .section-message {
+            font-size: 1.25rem;
+            text-align: center;
+            color: var(--primary-600);
+            font-weight: 600;
+            margin-top: 3rem;
+            font-style: italic;
+            letter-spacing: -0.01em;
+        }
+        
+        /* Benefits Grid */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .benefit-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            border: 1px solid var(--neutral-200);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .benefit-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(135deg, var(--error-500), #dc2626);
+        }
+        
+        .benefit-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 
+                0 20px 25px -5px rgba(0, 0, 0, 0.1),
+                0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: var(--primary-200);
+        }
+        
+        .benefit-card h3 {
+            color: var(--error-500);
+            font-size: 1.125rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .benefit-card p {
+            color: var(--neutral-600);
+            line-height: 1.6;
+        }
+        
+        /* Pitfalls Section */
+        .pitfalls {
+            background: linear-gradient(135deg, var(--neutral-900) 0%, var(--neutral-800) 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .pitfalls::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(147, 51, 234, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        .pitfalls .container {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .pitfalls .section-title {
+            color: white;
+        }
+        
+        .pitfalls .section-subtitle {
+            color: var(--neutral-300);
+        }
+        
+        .pitfalls-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 3rem 0;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .pitfall-item {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        
+        .pitfall-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+            box-shadow: 
+                0 20px 25px -5px rgba(0, 0, 0, 0.2),
+                0 10px 10px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .pitfall-item::before {
+            content: '⚠️';
+            font-size: 1.5rem;
+            display: block;
+            margin-bottom: 1rem;
+        }
+        
+        .pitfall-item p {
+            color: var(--neutral-200);
+            line-height: 1.6;
+        }
+        
+        /* Solution Section */
+        .solution-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 2rem;
+            margin: 3rem 0;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .solution-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 1.25rem;
+            text-align: center;
+            border: 1px solid var(--neutral-200);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .solution-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--primary-50), var(--primary-100));
+            opacity: 0;
+            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .solution-card:hover::before {
+            opacity: 1;
+        }
+        
+        .solution-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary-300);
+            box-shadow: 
+                0 25px 50px -12px rgba(0, 0, 0, 0.15),
+                0 0 0 1px rgba(59, 130, 246, 0.05);
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .solution-icon {
+            width: 4rem;
+            height: 4rem;
+            background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin: 0 auto 1.5rem;
+            color: white;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3);
+        }
+        
+        .solution-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--neutral-900);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .solution-card p {
+            color: var(--neutral-600);
+            line-height: 1.6;
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Credibility Section */
+        .credibility {
+            background: var(--neutral-50);
+            text-align: center;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin: 3rem 0;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary-600);
+            display: block;
+            line-height: 1;
+            letter-spacing: -0.025em;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: var(--neutral-600);
+            font-weight: 500;
+            margin-top: 0.5rem;
+        }
+        
+        .founder-note {
+            background: white;
+            padding: 3rem;
+            border-radius: 1.25rem;
+            margin-top: 3rem;
+            box-shadow: 
+                0 10px 15px -3px rgba(0, 0, 0, 0.1),
+                0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--neutral-200);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .founder-note::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+        }
+        
+        .founder-note p {
+            font-style: italic;
+            font-size: 1.25rem;
+            color: var(--neutral-700);
+            line-height: 1.7;
+            margin: 0;
+        }
+        
+        /* Final CTA Section */
+        .final-cta {
+            background: linear-gradient(135deg, var(--neutral-900) 0%, var(--neutral-800) 100%);
+            color: white;
+            text-align: center;
+            padding: 6rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .final-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 30% 30%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 70%, rgba(147, 51, 234, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        .final-cta .container {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .final-cta h2 {
+            font-size: 2.75rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+            letter-spacing: -0.025em;
+            line-height: 1.2;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .cta-secondary {
+            background: transparent;
+            color: white;
+            padding: 1rem 2rem;
+            border: 2px solid var(--neutral-600);
+            border-radius: 0.75rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .cta-secondary:hover {
+            background: white;
+            color: var(--neutral-900);
+            transform: translateY(-2px);
+            border-color: white;
+            box-shadow: 
+                0 10px 15px -3px rgba(0, 0, 0, 0.1),
+                0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Animations */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .container {
+                padding: 0 1.5rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2rem;
+            }
+            
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .final-cta h2 {
+                font-size: 2.25rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .nav-menu {
+                gap: 1rem;
+            }
+            
+            .hero {
+                padding: 6rem 0 4rem;
+            }
+            
+            .section {
+                padding: 4rem 0;
+            }
+            
+            .pitfalls-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .solution-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .hero-text h1 {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <a href="#" class="logo">InboxOps</a>
+            <div class="nav-menu">
+                <div class="nav-links">
+                    <a href="#turnkey">Turnkey System Setup</a>
+                    <a href="#hosting">Managed System Hosting</a>
+                    <a href="#campaigns">Campaign Creation</a>
+                    <a href="#strategy">Strategy and Advisory</a>
+                    <a href="#about">About Us</a>
+                </div>
+                <a href="#services" class="nav-cta">Explore Services</a>
+                <button class="mobile-menu-btn">☰</button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container hero-content">
+                <div class="hero-text">
+                    <h1>Unlock the power of cold email — without the complexity.</h1>
+                    <p>Cold email is one of the most cost-effective ways to grow your business. InboxOps gives you the strategy, setup, and support you need to make it work.</p>
+                    <a href="#services" class="cta-primary">👉 Explore Services</a>
+                </div>
+                <div class="hero-image">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Professional workspace with laptop and analytics">
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Cold Email Section -->
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title fade-in">Why Cold Email?</h2>
+                <p class="section-subtitle fade-in">The growth channel that gives you control</p>
+                <div class="benefits-grid">
+                    <div class="benefit-card fade-in">
+                        <h3>Ads are expensive.</h3>
+                        <p>Rising costs and competition make paid advertising increasingly unsustainable for many businesses. Your CAC keeps climbing while results plateau.</p>
+                    </div>
+                    <div class="benefit-card fade-in">
+                        <h3>Referrals are unpredictable.</h3>
+                        <p>You can't control when referrals come in or build a predictable growth strategy around them. Hope isn't a strategy.</p>
+                    </div>
+                    <div class="benefit-card fade-in">
+                        <h3>SEO is slow.</h3>
+                        <p>Search engine optimization takes months or years to show meaningful results for most businesses. You need growth now, not someday.</p>
+                    </div>
+                </div>
+                <p class="fade-in" style="font-size: 1.125rem; text-align: center; margin: 2rem 0; color: var(--neutral-600); max-width: 800px; margin-left: auto; margin-right: auto; line-height: 1.7;">Cold email gives you direct access to your ideal buyers — on your terms. It scales, it's measurable, and it works for nearly every B2B or professional services business.</p>
+                <div class="section-message fade-in">Cold email is a growth channel too powerful to ignore.</div>
+            </div>
+        </section>
+
+        <!-- Pitfalls Section -->
+        <section class="section pitfalls">
+            <div class="container">
+                <h2 class="section-title fade-in">The Pitfalls: Why Most Fail</h2>
+                <p class="section-subtitle fade-in">It's not that cold email doesn't work — it's just harder than it looks</p>
+                <div class="pitfalls-list">
+                    <div class="pitfall-item fade-in">
+                        <p><strong>The tech stack is complex and fragile</strong> — one mistake ruins everything. Domain reputation, deliverability, compliance... it's a minefield.</p>
+                    </div>
+                    <div class="pitfall-item fade-in">
+                        <p><strong>Without a strategy,</strong> it's just noise. Random outreach to random people with random messages gets random (bad) results.</p>
+                    </div>
+                    <div class="pitfall-item fade-in">
+                        <p><strong>Poor messaging</strong> = ignored emails. Generic templates and weak value props get deleted before they're even read.</p>
+                    </div>
+                    <div class="pitfall-item fade-in">
+                        <p><strong>Bad practices</strong> damage domains and brand reputation. One blacklist or spam complaint can destroy months of work.</p>
+                    </div>
+                </div>
+                <div class="section-message fade-in" style="color: var(--neutral-300);">Most businesses fail at cold email not because it doesn't work — but because it's harder to get right than it looks.</div>
+            </div>
+        </section>
+
+        <!-- Solution Section -->
+        <section class="section" id="services">
+            <div class="container">
+                <h2 class="section-title fade-in">Why InboxOps</h2>
+                <p class="section-subtitle fade-in">Everything you need to run cold email successfully — without the risk and wasted time</p>
+                <div class="solution-grid">
+                    <a href="#turnkey" class="solution-card fade-in">
+                        <div class="solution-icon">⚡</div>
+                        <h3>Setup</h3>
+                        <p>Turnkey infrastructure, live in 48 hours. Domains, tools, deliverability — we handle the complex technical foundation.</p>
+                    </a>
+                    <a href="#hosting" class="solution-card fade-in">
+                        <div class="solution-icon">🛡️</div>
+                        <h3>Reputation Monitoring</h3>
+                        <p>Protect domains and inbox health with continuous monitoring and proactive management of your sender reputation.</p>
+                    </a>
+                    <a href="#campaigns" class="solution-card fade-in">
+                        <div class="solution-icon">💬</div>
+                        <h3>Campaign Development</h3>
+                        <p>Messaging and sequences that win replies. Research-backed copy that resonates with your ideal customers.</p>
+                    </a>
+                    <a href="#strategy" class="solution-card fade-in">
+                        <div class="solution-icon">🎯</div>
+                        <h3>Strategy</h3>
+                        <p>Targeting and guidance for predictable growth. Data-driven approach to prospect selection and campaign optimization.</p>
+                    </a>
+                </div>
+                <div class="section-message fade-in">We've done the hard work already. You get a cold email system that works — without the risk and wasted time.</div>
+            </div>
+        </section>
+
+        <!-- Credibility Section -->
+        <section class="section credibility">
+            <div class="container">
+                <h2 class="section-title fade-in">Proven Results</h2>
+                <p class="section-subtitle fade-in">Experience you can trust</p>
+                <div class="stats-grid">
+                    <div class="stat-item fade-in">
+                        <span class="stat-number">3+</span>
+                        <span class="stat-label">Years of Experience</span>
+                    </div>
+                    <div class="stat-item fade-in">
+                        <span class="stat-number">100K+</span>
+                        <span class="stat-label">Emails Sent</span>
+                    </div>
+                    <div class="stat-item fade-in">
+                        <span class="stat-number">Dozens</span>
+                        <span class="stat-label">Systems Built</span>
+                    </div>
+                </div>
+                <div class="founder-note fade-in">
+                    <p>"I created InboxOps so you can skip the complexity and just get results. After years of building systems and learning from every mistake, I've distilled everything into a proven process that works."</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final CTA Section -->
+        <section class="final-cta">
+            <div class="container">
+                <h2 class="fade-in">Ready to see what cold email can do for your business?</h2>
+                <div class="cta-buttons">
+                    <a href="#services" class="cta-primary fade-in">Explore Services</a>
+                    <a href="#contact" class="cta-secondary fade-in">Request More Info</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Enhanced scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Enhanced header scroll effect
+        let lastScrollY = window.scrollY;
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            const currentScrollY = window.scrollY;
+            
+            if (currentScrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+                header.style.boxShadow = '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.8)';
+                header.style.boxShadow = 'none';
+            }
+            
+            // Hide header on scroll down, show on scroll up
+            if (currentScrollY > lastScrollY && currentScrollY > 200) {
+                header.style.transform = 'translateY(-100%)';
+            } else {
+                header.style.transform = 'translateY(0)';
+            }
+            
+            lastScrollY = currentScrollY;
+        });
+
+        // Add loading state management
+        window.addEventListener('load', () => {
+            document.body.classList.add('loaded');
+        });
+    </script>
+</body>
+</html>
