@@ -492,29 +492,6 @@
             margin-top: 24px;
         }
         
-        .pricing-features {
-            list-style: none;
-            margin-top: 24px;
-            text-align: left;
-        }
-        
-        .pricing-features li {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            margin-bottom: 12px;
-            color: var(--gray-700);
-            font-size: 16px;
-        }
-        
-        .pricing-features li::before {
-            content: '✓';
-            color: var(--success);
-            font-weight: 600;
-            flex-shrink: 0;
-            margin-top: 2px;
-        }
-        
         /* Final CTA */
         .final-cta {
             background: linear-gradient(135deg, var(--gray-900) 0%, var(--gray-800) 100%);
@@ -766,11 +743,6 @@
                         <div class="pricing-description">
                             One 60-minute session.
                         </div>
-                        <ul class="pricing-features">
-                            <li>Deep-dive strategy session</li>
-                            <li>Actionable recommendations</li>
-                            <li>Campaign review & optimization</li>
-                        </ul>
                     </div>
                     <div class="pricing-card featured fade-in">
                         <div class="pricing-header">
@@ -781,12 +753,6 @@
                         <div class="pricing-description">
                             Four weekly calls (60 minutes each).
                         </div>
-                        <ul class="pricing-features">
-                            <li>Weekly strategic guidance</li>
-                            <li>Continuous optimization</li>
-                            <li>Integration planning</li>
-                            <li>Performance review</li>
-                        </ul>
                     </div>
                 </div>
             </div>
@@ -839,7 +805,7 @@
             if (currentScrollY > lastScrollY && currentScrollY > 200) {
                 header.style.transform = 'translateY(-100%)';
             } else {
-                header.style.transform = 'translateY(0);
+                header.style.transform = 'translateY(0)';
             }
             
             lastScrollY = currentScrollY;
